@@ -1,38 +1,31 @@
 package com.ruch.employeeservice.service;
-import com.ruch.employeeservice.client.DepartmentClient;
+
 import com.ruch.employeeservice.entity.Employee;
 import com.ruch.employeeservice.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeService {
 
     @Autowired
-    private EmployeeRepository repository;
+    private EmployeeRepository employeeRepository;
 
-    @Autowired
-    private DepartmentClient departmentClient;
-
-    public List<Employee> getAllEmployees() {
-        return repository.findAll();
-    }
-
-    public Employee getEmployeeById(Long id) {
-        return repository.findById(id).orElse(null);
-    }
-
+    // Save Employee
     public Employee saveEmployee(Employee employee) {
-        return repository.save(employee);
+        return employeeRepository.save(employee);
     }
 
-    public Object getEmployeeWithDepartment(Long employeeId) {
-        Employee employee = repository.findById(employeeId).orElse(null);
-        if (employee != null) {
-            employee.setDepartment(departmentClient.getDepartmentById(employee.getDepartmentId()));
-        }
-        return employee;
+    // Get All Employees
+    public List<Employee> getAllEmployees() {
+        return employeeRepository.findAll();
+    }
+
+    // Get Employee by ID
+    public Optional<Employee> getEmployeeById(Long id) {
+        return employeeRepository.findById(id);
     }
 }
